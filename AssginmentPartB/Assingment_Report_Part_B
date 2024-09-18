@@ -1,0 +1,20 @@
+Optimizations and Design Decisions
+Key Optimizations:
+Centralized Common Functionality:
+
+The decision to use inheritance for common account operations like deposit() and account_info() helps centralize the logic. This reduces code duplication and ensures maintainability. If we ever need to modify how deposits or balance handling work, we only need to update the BankAccount class.
+
+Method Overriding:
+By overriding the withdraw() method in CheckingAccount, we make sure that checking accounts behave differently (with transaction fees) while maintaining consistency with the base class’s logic. The SavingsAccount, which does not need to change how withdrawals are handled, simply inherits the base class withdraw() method, further reducing redundancy.
+Interest Application in SavingsAccount:
+
+The apply_interest() method in SavingsAccount was designed to extend the functionality without altering the class. The balance calculation is done by multiplying the balance by the interest rate, which is then added to the existing balance. This ensures that the logic for applying interest is independent of the core functionality but still integrated with it through inheritance.
+Design Considerations:
+Modularity: Each class has a well-defined role:
+
+BankAccount: Handles basic account management.
+SavingsAccount: Adds the ability to apply interest.
+CheckingAccount: Manages withdrawals with transaction fees.
+This modular design makes the system flexible. New account types can be added in the future by inheriting from BankAccount and overriding or extending methods as needed.
+
+Readability and Maintainability: The use of inheritance and method overriding results in clean, easy-to-read code that is easy to maintain. Each class has a clear responsibility, and changes to the system (such as adding new functionality) can be done with minimal impact on the rest of the codebase.

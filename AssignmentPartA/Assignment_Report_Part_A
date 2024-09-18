@@ -1,0 +1,47 @@
+1.1 Identify and Fix Logical Errors
+The original code has one key issue: it uses a mutable default argument (prime_factors=[]),
+which causes unexpected behavior in repeated function calls. Specifically,
+this leads to accumulation of previous results when calling the function multiple times, resulting in incorrect outputs.
+
+1.2 Test with Various Inputs
+Here’s a comparison of test cases with both versions of the code:
+
+Input 1:
+Original: [] (correct)
+New: [] (correct)
+Input 56 (Prime factorization: 2 × 2 × 2 × 7):
+Original: [2, 2, 2, 7] (correct)
+New: [2, 2, 2, 7] (correct)
+Input 97 (Prime number):
+Original: [2, 2, 2, 7, 97] (incorrect)
+New: [97] (correct)
+Input 100 (Prime factorization: 2 × 2 × 5 × 5):
+Original: [2, 2, 2, 7, 97, 2, 2, 5, 5] (incorrect)
+New: [2, 2, 5, 5] (correct)
+Input 8688 (Prime factorization: 2 × 2 × 2 × 2 × 3 × 181):
+Original: [2, 2, 2, 7, 97, 2, 2, 5, 5, 2, 2, 2, 2, 3, 181] (incorrect)
+New: [2, 2, 2, 2, 3, 181] (correct)
+Input 8689 (Prime number):
+Original: [2, 2, 2, 7, 97, 2, 2, 5, 5, 2, 2, 2, 2, 3, 181, 8689] (incorrect)
+New: [8689] (correct)
+
+Part 2: Optimize the Code
+The optimization goal here is to make the function more efficient, especially for large numbers, and improve readability.
+
+2.1 Reduce Number of Divisions and Loop Iterations
+Optimization:
+Even Numbers: We handle the factor 2 separately using a loop before moving on to odd numbers. This eliminates unnecessary checks for even divisors in the main loop.
+Odd Numbers: After factoring out all 2s, we only check odd divisors (starting from 3), skipping even numbers, which reduces the number of iterations in the main loop.
+Time Complexity:
+Original Time Complexity: O(sqrt(n)) due to the loop iterating up to sqrt(n). However, it unnecessarily checks even numbers after the first few iterations, which could lead to slightly more iterations.
+Optimized Time Complexity: O(sqrt(n)), but with fewer iterations because we skip even numbers after handling the factor 2.
+
+Part 3: Explanation of Changes
+3.1 Bugs Fixed:
+Mutable Default Argument: The biggest bug was using a mutable default argument (prime_factors=[]). By switching to prime_factors=None and initializing the list inside the function, we fixed the issue of lists being shared between function calls, which caused accumulated and incorrect results.
+3.2 Optimization Explanation:
+Handling Factor 2 Separately: By factoring out 2 first, we reduce the number of iterations needed in the main loop. The remaining number is guaranteed to be odd, so we can skip checking even divisors.
+Incrementing by 2: We increment the loop variable by 2 after handling the factor of 2, effectively skipping even numbers and improving performance.
+3.3 Performance Improvements:
+Fewer Iterations: Skipping even numbers reduces the number of unnecessary divisions, which improves performance for larger inputs.
+Simpler Logic: The code is easier to understand because it separates the handling of the factor 2 from the general prime factorization logic.
